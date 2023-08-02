@@ -8,7 +8,7 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
-const messages = [
+const chatMessages = [
   {
     role: 'system',
     content:
@@ -33,11 +33,11 @@ router.post('/chat', async (req, res) => {
 
   const completion = await openai.createChatCompletion({
     model: 'gpt-3.5-turbo',
-    messages: messages,
+    messages: chatMessages,
   });
   let bookchat = completion.data.choices[0].message['content'];
-  messages.push({ role: 'assistant', content: bookchat });
-  console.log(messages);
+  chatMessages.push({ role: 'assistant', content: bookchat });
+  console.log(chatMessages);
   res.send(bookchat);
 });
 
