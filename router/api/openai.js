@@ -29,7 +29,7 @@ router.post('/chat', async (req, res) => {
   const { content, sender } = req.body;
 
   if (content === '') return;
-  messages.push({ role: sender, content: content });
+  chatMessages.push({ role: sender, content: content });
 
   const completion = await openai.createChatCompletion({
     model: 'gpt-3.5-turbo',
@@ -41,15 +41,14 @@ router.post('/chat', async (req, res) => {
   res.send(bookchat);
 });
 
-router.get('/recommend', async (req, res) => {
-  // const { book, weather, mood, other } = req.body;
-  const book = '알랭 드 보통의 우리는 사랑일까';
+router.post('/recommend', async (req, res) => {
+  const { book, weather, mood, other } = req.body;
 
   let conditionMessage = '이런 조건에 맞는 책을 추천해주세요';
-  if (book) conditionMessage += `\n - 좋아하는 책: ${book}`;
-  // if (weather) conditionMessage += `\n - 이런 날씨일 때: ${weather}`;
-  // if (mood) conditionMessage += `\n - 이런 기분일 때: ${book}`;
-  // if (other) conditionMessage += `\n - 그리고 다른 조건들: ${book}`;
+  if (book) conditionMessage += `\n - 좋아하는 책과 저자: ${book}`;
+  if (weather) conditionMessage += `\n - 이런 날씨일 때: ${weather}`;
+  if (mood) conditionMessage += `\n - 이런 기분일 때: ${mood}`;
+  if (other) conditionMessage += `\n - 그리고 다른 조건들: ${other}`;
 
   console.log('cm', conditionMessage);
 
@@ -57,12 +56,12 @@ router.get('/recommend', async (req, res) => {
     {
       role: 'system',
       content:
-        '당신은 책 전문가이다. 모든 책을 다 읽었고, 모든 책의 정보를 명확하게 잘 알고 있다. 모든 책에 대해서 토론할 수 있다. 모든 책에 대한 질문에 명확하게 답할 수 있으며, 책에 대한 감상을 얘기할 수 있다. 또한 책 추천을 세계 최고로 잘 한다. 기분, 날씨, 분위기, 상황에 따른 책 추천을 무조건 할 수 있다. 좋아하는 책을 말하면 그와 비슷한 책을 추천해 줄 수 있다. 책을 추천해 줄때는 책에 대한 정보와 이유도 명료하고 명확하게 말하며, 한번에 하나의 책만 추천한다. 대답할 때의 형식은 [{id: 순서, title: 책제목, author: 책저자, reason: 추천 이유}] 의 형식으로 대답한다.',
+        '당신은 책 전문가이다. 모든 책을 다 읽었고, 모든 책의 정보를 명확하게 잘 알고 있다. 모든 책에 대해서 토론할 수 있다. 모든 책에 대한 질문에 명확하게 답할 수 있으며, 책에 대한 감상을 얘기할 수 있다. 또한 책 추천을 세계 최고로 잘 한다. 기분, 날씨, 분위기, 상황에 따른 책 추천을 무조건 할 수 있다. 좋아하는 책을 말하면 그와 비슷한 책을 추천해 줄 수 있다. 책을 추천해 줄때는 책에 대한 정보와 이유도 명료하고 명확하게 말하며, 한번에 2개의 책을 추천한다. 대답할 때의 형식은 무조건 [{id: 순서, title: 책제목, author: 책저자, reason: 추천 이유}] 의 형식으로만 대답한다.',
     },
     {
       role: 'user',
       content:
-        '당신은 책 전문가이다. 모든 책을 다 읽었고, 모든 책의 정보를 명확하게 잘 알고 있다. 모든 책에 대해서 토론할 수 있다. 모든 책에 대한 질문에 명확하게 답할 수 있으며, 책에 대한 감상을 얘기할 수 있다. 또한 책 추천을 세계 최고로 잘 한다. 기분, 날씨, 분위기, 상황에 따른 책 추천을 무조건 할 수 있다. 좋아하는 책을 말하면 그와 비슷한 책을 추천해 줄 수 있다. 책을 추천해 줄때는 책에 대한 정보와 이유도 명료하고 명확하게 말하며, 한번에 하나의 책만 추천한다. 대답할 때의 형식은 [{id: 순서, title: 책제목, author: 책저자, reason: 추천 이유}] 의 형식으로 대답한다.',
+        '당신은 책 전문가이다. 모든 책을 다 읽었고, 모든 책의 정보를 명확하게 잘 알고 있다. 모든 책에 대해서 토론할 수 있다. 모든 책에 대한 질문에 명확하게 답할 수 있으며, 책에 대한 감상을 얘기할 수 있다. 또한 책 추천을 세계 최고로 잘 한다. 기분, 날씨, 분위기, 상황에 따른 책 추천을 무조건 할 수 있다. 좋아하는 책을 말하면 그와 비슷한 책을 추천해 줄 수 있다. 책을 추천해 줄때는 책에 대한 정보와 이유도 명료하고 명확하게 말하며, 한번에 2개의 책을 추천한다. 대답할 때의 형식은 무조건 [{id: 순서, title: 책제목, author: 책저자, reason: 추천 이유}] 의 형식으로만 대답한다.',
     },
     {
       role: 'assistant',
@@ -80,6 +79,7 @@ router.get('/recommend', async (req, res) => {
   });
   let recommend = completion.data.choices[0].message['content'];
   console.log(recommend);
+  res.send(recommend);
 });
 
 module.exports = router;
