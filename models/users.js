@@ -1,3 +1,5 @@
+const verify = require('../lib/encryption');
+
 let users = [
   {
     email: 'test@test.com',
@@ -78,3 +80,8 @@ let users = [
 ];
 
 const findUserByEmail = email => users.find(user => user.email === email);
+
+const findUser = (email, password) =>
+  users.find(
+    user => user.email === email && verify.verifyPassword(password, user.password.salt, user.password.hashedPassword)
+  );
