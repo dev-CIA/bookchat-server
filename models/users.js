@@ -100,3 +100,5 @@ const createUser = async (email, password, nickname) => {
     },
   ];
 };
+
+module.exports = { findUserByEmail, findUser, createUser };
