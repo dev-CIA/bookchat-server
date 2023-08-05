@@ -41,3 +41,15 @@ router.post('/signin', (req, res) => {
 
   res.send({ email, nickname });
 });
+
+router.post('/signup', async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = users.findUserByEmail(email);
+  if (user) return res.status(409).send('중복된 이메일이 존재합니다.');
+
+  await users.createUser(email, password);
+  const newUser = user.findUserByEmail(email);
+
+  res.send({ email, nickname: newUser.nickname });
+});
