@@ -23,7 +23,7 @@ router.post('/signin', (req, res) => {
 
   if (!email || !password) return res.status(401).send({ error: '사용자 아이디 또는 패스워드가 전달되지 않았습니다.' });
 
-  const user = users.findUser(email.password);
+  const user = users.findUser(email, password);
   console.log('[USER]', user);
 
   if (!user) return res.status(401).send({ error: '등록되지 않은 사용자입니다.' });
@@ -43,13 +43,13 @@ router.post('/signin', (req, res) => {
 });
 
 router.post('/signup', async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, nickname } = req.body;
 
   const user = users.findUserByEmail(email);
   if (user) return res.status(409).send('중복된 이메일이 존재합니다.');
 
   await users.createUser(email, password);
-  const newUser = user.findUserByEmail(email);
+  const newUser = users.findUserByEmail(email);
 
   res.send({ email, nickname: newUser.nickname });
 });
