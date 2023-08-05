@@ -76,3 +76,5 @@ let users = [
     ],
   },
 ];
+
+const findUserByEmail = email => users.find(user => user.email === email);
