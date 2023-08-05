@@ -8,7 +8,7 @@ let users = [
       hashedPassword: '',
       salt: '',
     },
-    name: 'test',
+    nickname: 'test',
     my_library: [
       {
         title: '시선으로부터, (정세랑 장편소설)',
@@ -83,5 +83,20 @@ const findUserByEmail = email => users.find(user => user.email === email);
 
 const findUser = (email, password) =>
   users.find(
-    user => user.email === email && verify.verifyPassword(password, user.password.salt, user.password.hashedPassword)
+    async user =>
+      user.email === email && (await verify.verifyPassword(password, user.password.salt, user.password.hashedPassword))
   );
+
+const createUser = async (email, password, nickname) => {
+  const _password = await verify.createHashedPassword(password);
+
+  users = [
+    ...users,
+    {
+      email,
+      password: _password,
+      nickname: nickname || email.split('@')[0],
+      my_library: [],
+    },
+  ];
+};
