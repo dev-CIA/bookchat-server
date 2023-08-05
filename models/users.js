@@ -5,8 +5,8 @@ let users = [
     email: 'test@test.com',
     // password: 'test123!',
     password: {
-      hashedPassword: '',
-      salt: '',
+      hashedPassword: 'rfeWbjQcp8HykAaZ/CSZOrC9Vuj+nAK8ZLdfSE0FfhtXY8oLR21lUXQMRO3zN9auh1R1bBFc/mv34QQGqgfh9A==',
+      salt: 'Sq8ahX2trhmrARioCuCfjSsTrXQZpEVEmQj3W4HteF/bHyB6FmqtIxVNZATwp7wFpT2Ax3PSQ5n81JGel9pAbQ==',
     },
     nickname: 'test',
     my_library: [
