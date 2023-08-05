@@ -39,7 +39,7 @@ router.post('/signin', (req, res) => {
     secure: true,
   });
 
-  res.send({ email, nickname });
+  res.send({ email, nickname: user.nickname });
 });
 
 router.post('/signup', async (req, res) => {
