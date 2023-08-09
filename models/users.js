@@ -81,12 +81,6 @@ let users = [
 
 const findUserByEmail = email => users.find(user => user.email === email);
 
-const findUser = (email, password) =>
-  users.find(
-    async user =>
-      user.email === email && (await verify.verifyPassword(password, user.password.salt, user.password.hashedPassword))
-  );
-
 const createUser = async (email, password, nickname) => {
   const _password = await verify.createHashedPassword(password);
 
@@ -101,4 +95,4 @@ const createUser = async (email, password, nickname) => {
   ];
 };
 
-module.exports = { findUserByEmail, findUser, createUser };
+module.exports = { findUserByEmail, createUser };
