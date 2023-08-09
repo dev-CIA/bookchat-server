@@ -5,13 +5,14 @@ const jwt = require('jsonwebtoken');
 
 router.get('/verify', (req, res) => {
   const accessToken = req.headers.authorization || req.cookies.accessToken;
+  console.log('accessToken: ', accessToken);
 
   try {
     const decoded = jwt.verify(accessToken, process.env.JWT_SECRET_KEY);
     console.log(`😀 사용자 인증 성공`, decoded);
 
     const user = users.findUserByEmail(decoded.email);
-    res.send({ isLogin: true, email: user.email, nickname: user.nickname, my_library: user.my_library });
+    res.send({ isLogin: true, email: user.email });
   } catch (e) {
     console.log('😱 사용자 인증 실패..', e);
     res.status(401).send({ isLogin: false, error: '😱 사용자 인증 실패..' });
