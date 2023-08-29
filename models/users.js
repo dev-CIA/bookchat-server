@@ -258,4 +258,12 @@ const createUser = async (email, password, nickname) => {
   ];
 };
 
-module.exports = { findUserByEmail, createUser };
+const addBook = (email, newBook) => {
+  users = users.map(user =>
+    user.email === email && !user.my_library.find(({ itemId }) => itemId === newBook.itemId)
+      ? { ...user, my_library: [...user.my_library, newBook] }
+      : user
+  );
+};
+
+module.exports = { findUserByEmail, createUser, addBook };
