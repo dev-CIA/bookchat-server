@@ -14,4 +14,9 @@ router.get('/:email/library', (req, res) => {
   }
 });
 
+router.post('/:email/library', (req, res) => {
+  const { email, newBook } = req.body;
+  users.addBook(email, newBook);
+});
+
 module.exports = router;
