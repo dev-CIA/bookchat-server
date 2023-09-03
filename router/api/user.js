@@ -19,4 +19,10 @@ router.post('/:email/library', (req, res) => {
   users.addBook(email, newBook);
 });
 
+router.patch('/:email/library/:itemId', (req, res) => {
+  const { itemId } = req.params;
+  const { email, rate } = req.body;
+  users.editRate(email, itemId, rate);
+});
+
 module.exports = router;
