@@ -266,4 +266,15 @@ const addBook = (email, newBook) => {
   );
 };
 
-module.exports = { findUserByEmail, createUser, addBook };
+const editRate = (email, itemId, rate) => {
+  users = users.map(user =>
+    user.email === email
+      ? {
+          ...user,
+          my_library: user.my_library.map(book => (book.itemId === +itemId ? { ...book, rate: rate } : book)),
+        }
+      : user
+  );
+};
+
+module.exports = { findUserByEmail, createUser, addBook, editRate };
