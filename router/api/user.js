@@ -14,4 +14,15 @@ router.get('/:email/library', (req, res) => {
   }
 });
 
+router.post('/:email/library', (req, res) => {
+  const { email, newBook } = req.body;
+  users.addBook(email, newBook);
+});
+
+router.patch('/:email/library/:itemId', (req, res) => {
+  const { itemId } = req.params;
+  const { email, rate } = req.body;
+  users.editRate(email, itemId, rate);
+});
+
 module.exports = router;
