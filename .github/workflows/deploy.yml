@@ -29,6 +29,8 @@ jobs:
                   secret: JWT_SECRET_KEY
                 - name: OPENAI_API_KEY
                   secret: OPENAI_API_KEY
+                - name: ALADIN_TTB_KEY
+                  secret: ALADIN_TTB_KEY
               ports: 3000
             context:
               git:
