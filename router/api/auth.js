@@ -15,7 +15,7 @@ router.get('/verify', (req, res) => {
     res.send({ isLogin: true, email: user.email });
   } catch (e) {
     console.log('😱 사용자 인증 실패..', e);
-    res.status(401).send({ isLogin: false, error: '😱 사용자 인증 실패..' });
+    res.sendStatus(401);
   }
 });
 
