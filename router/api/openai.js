@@ -77,7 +77,7 @@ router.post('/recommend', async (req, res) => {
   ];
 
   const completion = await openai.createChatCompletion({
-    model: 'gpt-3.5-turbo',
+    model: 'gpt-4o-mini',
     messages: recommendMessages,
   });
   let recommend = completion.data.choices[0].message['content'];
